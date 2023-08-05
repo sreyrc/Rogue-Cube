@@ -190,7 +190,7 @@ public class LevelManager : MonoBehaviour
         {
             if (powerUpCollected) { spawnNewRoom = true; }
         }
-        else if (enemyManager.Enemies.Count == 0) 
+        else if (enemyManager.EnemyMap.Count == 0) 
         { 
             spawnNewRoom = true; 
         }

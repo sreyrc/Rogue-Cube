@@ -176,7 +176,7 @@ MonoBehaviour:
   hitCoolDownDuration: 0.03
   hitCoolDownTime: 0
   attackRadius: 3
-  healthBar: {fileID: 0}
+  hitParticles: {fileID: 2475836489115903224, guid: e43a185a1a66c96408806f93875c6ace, type: 3}
   emitParticles: 0
   deathParticlesEmitted: 0
   isStunned: 0

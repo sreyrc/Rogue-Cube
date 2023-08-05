@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class EnemyHurtLogic : MonoBehaviour
@@ -15,12 +16,12 @@ public class EnemyHurtLogic : MonoBehaviour
 
     [SerializeField] float attackRadius = 3.0f;
 
+    [SerializeField] GameObject hitParticles;
+
     GameObject player;
     Weapon playerWeapon;
     PlayerAttack playerAttackComp;
     
-    public GameObject healthBar;
-
     public bool emitParticles = false;
     public bool deathParticlesEmitted = false;
     public bool isStunned = false;
@@ -77,8 +78,10 @@ public class EnemyHurtLogic : MonoBehaviour
             // Animation transition
             if (animator != null) { animator.SetBool("isHit", true); }
 
-            // Give an indicator that particles should be emitted
-            emitParticles = true;
+            //// Give an indicator that particles should be emitted
+            //emitParticles = true;
+            var hitParticlesIntance = Instantiate(hitParticles);
+            hitParticlesIntance.transform.position = transform.position;
 
             // Stun mechanic is only for animation
             stunTimer = stunDuration;
@@ -98,6 +101,10 @@ public class EnemyHurtLogic : MonoBehaviour
         if (hitCoolDownTime > 0.0f)
         {
             hitCoolDownTime -= Time.deltaTime;
+        }
+        else if (animator != null)
+        {
+            animator.SetBool("isHit", false);
         }
 
         if (stunTimer > 0.0f)
@@ -123,6 +130,11 @@ public class EnemyHurtLogic : MonoBehaviour
                 animator.SetBool("isHit", false);
             }
             isStunned = false;
+        }
+
+        if (stats.Hp <= 0.0f)
+        {
+            FindAnyObjectByType<EnemyManager>().KillEnemy(name);
         }
     }
 }

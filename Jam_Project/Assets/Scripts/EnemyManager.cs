@@ -12,30 +12,21 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField] GameObject healthBar;
 
-    private List<GameObject> enemies = new List<GameObject>();
-    public List<GameObject> Enemies
+    //private List<GameObject> enemies = new List<GameObject>();
+    private Dictionary<string, GameObject> enemyMap = new Dictionary<string, GameObject>();
+    public Dictionary<string, GameObject> EnemyMap
     {
-        get { return enemies; }
+        get { return enemyMap; }
     }
 
     [SerializeField] Vector2Int enemyIndexBounds;
     [SerializeField] Vector2Int enemyCountMinMax;
 
-    private void Update()
+    public void KillEnemy(string enemyName)
     {
-        // TODO: Not the biggest deal right now - but definitely inefficient
-        // Use a dictionary or something
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            // If Particles manager emitted the death particles for this,
-            // then only destroy this object. The order matters
-            if (enemies[i].GetComponent<EnemyHurtLogic>().deathParticlesEmitted)
-            {
-                var enemy = enemies[i];
-                enemies.Remove(enemies[i]);
-                Destroy(enemy);
-            }
-        }
+        GameObject enemy = enemyMap[enemyName];
+        enemyMap.Remove(enemyName);
+        Destroy(enemy);
     }
 
     // Update is called once per frame
@@ -55,7 +46,9 @@ public class EnemyManager : MonoBehaviour
             var healthbar = Instantiate(healthBar, spawnPosition + Vector3.up, Quaternion.identity);
             healthbar.transform.parent = enemy.transform;
 
-            enemies.Add(enemy);
+            enemy.name = "Enemy" + i.ToString();
+
+            enemyMap.Add(enemy.name, enemy);
         }
     }
 }
