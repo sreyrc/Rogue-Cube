@@ -7,6 +7,7 @@ public class PlayerInteractionLogic : MonoBehaviour
 {
     CharacterStats playerStats;
     GameObject pickupWithinRange;
+    public bool isHurt = false;
 
     [SerializeField] TextMeshPro infoDisplay; 
     private void Start()
@@ -20,6 +21,7 @@ public class PlayerInteractionLogic : MonoBehaviour
         if (damager != null)
         {
             damager.InflictDamage(playerStats);
+            isHurt = true;
         }
     }
 
@@ -30,9 +32,7 @@ public class PlayerInteractionLogic : MonoBehaviour
         {
             infoDisplay.text = pickup.Info;
             infoDisplay.transform.position = other.transform.position + Vector3.up * 2.0f;
-            pickup.ApplyEffect(transform.gameObject);
             pickupWithinRange = other.gameObject;
-            //Destroy(other.gameObject);
         }
     }
 

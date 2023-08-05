@@ -113,7 +113,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2980096263119388963}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5f0dedeb7898024ea4a732174444ce9, type: 3}
   m_Name: 
@@ -373,6 +373,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRadius: 3.5
   fov: 45
+  playerInRange: 0
+  timeTillEnableCollider: Infinity
 --- !u!54 &-8398736807673524612
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -513,7 +515,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8098796447372946138}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5f0dedeb7898024ea4a732174444ce9, type: 3}
   m_Name: 

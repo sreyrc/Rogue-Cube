@@ -79,7 +79,7 @@ public class RoomGenerator : MonoBehaviour
                     tempTileGameObjects.Add(tile);
                     sourceMeshFilters.Add(tile.GetComponent<MeshFilter>());
 
-                    if(!playerSpawnPositionSet)
+                    if (i == roomHeightUnits && !playerSpawnPositionSet)
                     {
                         playerSpawnPositions.Add(roomNumber, tile.transform.position + 1.3f * Vector3.up);
                         playerSpawnPositionSet = true;

@@ -9,6 +9,8 @@ TagManager:
   - Beam
   - Laser
   - RoomTile
+  - Damage Effect
+  - Info Display
   layers:
   - Default
   - TransparentFX

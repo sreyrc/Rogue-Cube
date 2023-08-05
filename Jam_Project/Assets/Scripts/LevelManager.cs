@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
+using TMPro;
 using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class LevelManager : MonoBehaviour
 {
@@ -28,6 +31,8 @@ public class LevelManager : MonoBehaviour
     EnemyManager enemyManager;
 
     GameObject player;
+    
+    TextMeshPro infoText;
 
     bool spawnNewRoom = true;
     int roomIndex = -1;
@@ -37,6 +42,7 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        infoText = GameObject.FindGameObjectWithTag("Info Display").GetComponent<TextMeshPro>();
 
         roomGenerator = FindAnyObjectByType<RoomGenerator>();
         enemyManager = FindAnyObjectByType<EnemyManager>();
@@ -50,11 +56,14 @@ public class LevelManager : MonoBehaviour
 
         for (int i = 0; i < numRooms; i++)
         {
-            int roomTypeRand = Random.Range(0, 100);
-            if (roomTypeRand < 20)
+            if (i % 3 == 0 && i > 0)
             {
-                powerUpRoomIndices.Add(i);
-                continue;
+                int roomTypeRand = Random.Range(0, 100);
+                if (roomTypeRand < 50)
+                {
+                    powerUpRoomIndices.Add(i);
+                    continue;
+                }
             }
 
             int density = (int)Random.Range(densityMinMax.x, densityMinMax.y);
@@ -78,8 +87,7 @@ public class LevelManager : MonoBehaviour
         if (spawnNewRoom)
         {
             totalRoomIndex++;
-
-            // Later replace with fade transitions when time permits
+            infoText.text = "";
 
             // Check if previous room was the power-up room. If so deactivate
             if (inPowerUpRoom) 
@@ -120,10 +128,21 @@ public class LevelManager : MonoBehaviour
 
                     player.transform.position = Vector3.up * 1.3f;
 
-                    // Spawn 3 random powerups
-                    powerUpsSpawned[0] = Instantiate(powerUps[Random.Range(0, powerUps.Length)], new Vector3(5, 2, 0), Quaternion.identity);
-                    powerUpsSpawned[1] = Instantiate(powerUps[Random.Range(0, powerUps.Length)], new Vector3(0, 2, 0), Quaternion.identity);
-                    powerUpsSpawned[2] = Instantiate(powerUps[Random.Range(0, powerUps.Length)], new Vector3(-5, 2, 0), Quaternion.identity);
+
+                    // Spawn 3 random distinct powerups
+                    int xPos = -5;
+                    List<int> indices = new List<int>() { 0, 1, 2, 3, 4, 5 };
+                    for (int i = 0; i < 3; i++)
+                    {
+                        int rand = Random.Range(0, indices.Count);
+                        powerUpsSpawned[i] = 
+                            Instantiate(powerUps[indices[rand]], 
+                                new Vector3(xPos, 2, 5), 
+                                Quaternion.identity);
+
+                        indices.Remove(indices[rand]);
+                        xPos += 5;
+                    }
 
                     spawnNewRoom = false;
                     inPowerUpRoom = true;

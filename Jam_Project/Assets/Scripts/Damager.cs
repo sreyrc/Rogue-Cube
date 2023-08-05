@@ -5,7 +5,7 @@ using UnityEngine;
 public class Damager : MonoBehaviour
 {
     [SerializeField] float pauseBetweenHurt = 1.0f;
-    [SerializeField] float damage = 1.0f;
+    [SerializeField] public float damage = 1.0f;
 
     float timer = 0.0f;
 

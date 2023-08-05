@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UIElements;
 
 public class EnemyManager : MonoBehaviour
@@ -21,6 +22,22 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField] Vector2Int enemyIndexBounds;
     [SerializeField] Vector2Int enemyCountMinMax;
+
+    public void ApplyCurse()
+    {
+        foreach (KeyValuePair<string, GameObject> enemy in enemyMap)
+        {
+            CharacterStats enemyStats = enemy.Value.GetComponent<CharacterStats>();
+            enemyStats.Hp *= 2.0f;
+            enemyStats.maxHp *= 2.0f;
+
+            Damager damager = enemy.Value.GetComponentInChildren<Damager>();
+            damager.damage *= 2.0f;
+
+            NavMeshAgent agent = enemy.Value.GetComponent<NavMeshAgent>();
+            agent.speed *= 1.5f;
+        }
+    }
 
     public void KillEnemy(string enemyName)
     {

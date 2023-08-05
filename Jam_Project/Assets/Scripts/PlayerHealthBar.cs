@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+public class PlayerHealthBar : MonoBehaviour
 {
     CharacterStats playerStats;
     RectTransform rectTransform;
@@ -19,7 +19,6 @@ public class HealthBar : MonoBehaviour
             GetComponent<CharacterStats>();
 
         playerPrevHp = playerStats.Hp;
-
 
         image = GetComponent<Image>();
         image.color = Color.green;
