@@ -170,6 +170,8 @@ public class LevelManager : MonoBehaviour
             // Spawn all the enemies
             enemyManager.SpawnEnemies();
 
+            // enemyManager.ApplyCurse();
+
             // Spawn gravity holes in the required places
             var holePosThislevel = roomGenerator.HolePositions[roomIndex];
 

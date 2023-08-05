@@ -23,19 +23,26 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] Vector2Int enemyIndexBounds;
     [SerializeField] Vector2Int enemyCountMinMax;
 
+    // Cursed encounter
+    // Enemies deal twice as much damage,
+    // have twice as much health and
+    // have move twice as fast
     public void ApplyCurse()
     {
         foreach (KeyValuePair<string, GameObject> enemy in enemyMap)
         {
             CharacterStats enemyStats = enemy.Value.GetComponent<CharacterStats>();
-            enemyStats.Hp *= 2.0f;
-            enemyStats.maxHp *= 2.0f;
+            enemyStats.maxHp *= 3.0f;
+            enemyStats.Hp *= 3.0f;
 
             Damager damager = enemy.Value.GetComponentInChildren<Damager>();
-            damager.damage *= 2.0f;
+            if (damager != null) { damager.damage *= 2.0f; }
 
             NavMeshAgent agent = enemy.Value.GetComponent<NavMeshAgent>();
-            agent.speed *= 1.5f;
+            agent.speed *= 2.0f;
+
+            var renderer = enemy.Value.GetComponentInChildren<MeshRenderer>();
+            renderer.material.color = new Color(0, 0, 0);
         }
     }
 
@@ -44,6 +51,14 @@ public class EnemyManager : MonoBehaviour
         GameObject enemy = enemyMap[enemyName];
         enemyMap.Remove(enemyName);
         Destroy(enemy);
+    }
+
+    public void ActivateColliders()
+    {
+        foreach (KeyValuePair<string, GameObject> enemy in enemyMap)
+        {
+            enemy.Value.GetComponent<Collider>().enabled = true;
+        }
     }
 
     // Update is called once per frame
@@ -67,5 +82,6 @@ public class EnemyManager : MonoBehaviour
 
             enemyMap.Add(enemy.name, enemy);
         }
+        Invoke("ActivateColliders", 2.0f);
     }
 }

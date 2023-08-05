@@ -30,7 +30,7 @@ public class Weapon : MonoBehaviour
     { 
         get {
             float damage = baseAttackDamage * (1 + (attackBonus + Critical()) * 0.01f);
-            valueDisplayUI.DisplayValue(damage);
+            valueDisplayUI.DisplayValue(damage, Color.white);
             return damage;
         } 
     }
@@ -38,7 +38,7 @@ public class Weapon : MonoBehaviour
     { 
         get {
             float damage = baseSpecialDamage * (1 + (specialBonus + Critical()) * 0.01f);
-            valueDisplayUI.DisplayValue(damage);
+            valueDisplayUI.DisplayValue(damage, Color.white);
             return damage;
         }
     }

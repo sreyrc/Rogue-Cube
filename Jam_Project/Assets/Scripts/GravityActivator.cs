@@ -16,7 +16,8 @@ public class GravityActivator : MonoBehaviour
 
         var playerDash = other.gameObject.GetComponent<PlayerDash>();
 
-        if (playerDash != null) { 
+        if (playerDash != null) 
+        { 
             if (playerDash.IsDashing) { return; } 
         }
 

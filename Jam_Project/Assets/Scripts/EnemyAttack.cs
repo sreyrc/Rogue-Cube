@@ -16,8 +16,8 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] float attackRadius;
     [SerializeField] float fov;
     [SerializeField] bool playerInRange = false;
-    bool enableCollider = false;
     [SerializeField] float timeTillEnableCollider = Mathf.Infinity;
+    bool enableCollider = false;
 
     void Start()
     {
@@ -39,10 +39,11 @@ public class EnemyAttack : MonoBehaviour
         if (UnityEngine.Vector3.Distance(transform.position, player.transform.position) < attackRadius
             && (Mathf.Rad2Deg * Mathf.Acos(UnityEngine.Vector3.Dot(vecToPlayer, transform.forward))) < fov)  
         {
-            if (!playerInRange) {
+            if (!playerInRange) 
+            {
                 playerInRange = true;
                 animator.SetBool("playerInRange", true);
-                timeTillEnableCollider = 2.0f;
+                timeTillEnableCollider = 1.0f;
             }
             else { timeTillEnableCollider -= Time.deltaTime; }
 

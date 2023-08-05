@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerInteractionLogic : MonoBehaviour
 {
     CharacterStats playerStats;
+    PlayerDash playerDash;
     GameObject pickupWithinRange;
     public bool isHurt = false;
 
@@ -13,12 +14,13 @@ public class PlayerInteractionLogic : MonoBehaviour
     private void Start()
     {
         playerStats = GetComponent<CharacterStats>();
+        playerDash = GetComponent<PlayerDash>();
     }
 
     private void OnTriggerStay(Collider other)
     {
         Damager damager = other.gameObject.GetComponent<Damager>();
-        if (damager != null)
+        if (damager != null && !playerDash.IsDashing)
         {
             damager.InflictDamage(playerStats);
             isHurt = true;
