@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1931237858773640987}
   - component: {fileID: 295170123832758749}
   - component: {fileID: 2754233269176561171}
-  - component: {fileID: 5904932536577855073}
   - component: {fileID: 2812541563460596392}
+  - component: {fileID: 5904932536577855073}
   m_Layer: 8
   m_Name: Tiny Enemy
   m_TagString: Enemy
@@ -96,19 +96,6 @@ NavMeshAgent:
   m_BaseOffset: 0.7
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5904932536577855073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 509807463727755244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c080f64d82dcad4a96957cad06c4c11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
 --- !u!114 &2812541563460596392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,11 +112,25 @@ MonoBehaviour:
   stunDuration: 1
   hitCoolDownDuration: 0.03
   hitCoolDownTime: 0
+  knockBackFactor: 2
   attackRadius: 3
   hitParticles: {fileID: 2475836489115903224, guid: e43a185a1a66c96408806f93875c6ace, type: 3}
   emitParticles: 0
   deathParticlesEmitted: 0
   isStunned: 0
+--- !u!114 &5904932536577855073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509807463727755244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c080f64d82dcad4a96957cad06c4c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &7335988111683957842
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,5 +271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f0dedeb7898024ea4a732174444ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valueDisplayUI: {fileID: 0}
   pauseBetweenHurt: 0.5
   damage: 3

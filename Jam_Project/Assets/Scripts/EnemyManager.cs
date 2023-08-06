@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -12,6 +13,8 @@ public class EnemyManager : MonoBehaviour
     public GameObject[] enemyPrefabs;
 
     [SerializeField] GameObject healthBar;
+
+    int totalEnemyCount = 0;
 
     //private List<GameObject> enemies = new List<GameObject>();
     private Dictionary<string, GameObject> enemyMap = new Dictionary<string, GameObject>();
@@ -41,9 +44,21 @@ public class EnemyManager : MonoBehaviour
             NavMeshAgent agent = enemy.Value.GetComponent<NavMeshAgent>();
             agent.speed *= 2.0f;
 
-            var renderer = enemy.Value.GetComponentInChildren<MeshRenderer>();
-            renderer.material.color = new Color(0, 0, 0);
+            Camera.main.backgroundColor = Color.red;
         }
+    }
+
+    void CreateAndSetupEnemy(int enemyType, Vector3 spawnPosition)
+    {
+        GameObject enemy = Instantiate(enemyPrefabs[enemyType], spawnPosition, Quaternion.identity);
+        
+        GameObject healthbar = Instantiate(healthBar, spawnPosition + Vector3.up, Quaternion.identity);
+        healthbar.transform.parent = enemy.transform;
+
+        ++totalEnemyCount;
+        enemy.name = "Enemy" + totalEnemyCount.ToString();
+
+        enemyMap.Add(enemy.name, enemy);
     }
 
     public void KillEnemy(string enemyName)
@@ -62,25 +77,32 @@ public class EnemyManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void SpawnEnemies()
+    public void SpawnEnemies(int roomCount)
     {
-        int enemyCount = Random.Range(enemyCountMinMax.x, enemyCountMinMax.y);
-        for(int i = 0; i < enemyCount; i++)
+        //int enemyCount = Random.Range(enemyCountMinMax.x, enemyCountMinMax.y);
+        int enemyCount = Random.Range(1, (int)Mathf.Lerp(0, enemyCountMinMax.y, roomCount / 20.0f));
+        int lastEnemyindex = (int)Mathf.Lerp(0, enemyIndexBounds.y, roomCount / 10.0f);
+
+        for (int i = 0; i < enemyCount; i++)
         {
             // Modify spawning logic later down the line
             Vector3 spawnPosition =
                 new Vector3(Random.Range(-10, 10), 1.3f, Random.Range(-10, 10));
 
-            int enemyType = Random.Range(enemyIndexBounds.x, enemyIndexBounds.y);
-                
-            GameObject enemy = Instantiate(enemyPrefabs[enemyType], spawnPosition, Quaternion.identity);
+            //int enemyType = Random.Range(enemyIndexBounds.x, enemyIndexBounds.y);
+            int enemyType = Random.Range(enemyIndexBounds.x, lastEnemyindex);
 
-            var healthbar = Instantiate(healthBar, spawnPosition + Vector3.up, Quaternion.identity);
-            healthbar.transform.parent = enemy.transform;
+            // If tiny enemy - add more (should be like a swarm)
+            if (enemyType == 2)
+            {
+                int tinyEnemyNum = Random.Range(7, 10);
+                for (int j = 0; j < tinyEnemyNum; j++)
+                {
+                    CreateAndSetupEnemy(enemyType, spawnPosition);
+                }
+            }
 
-            enemy.name = "Enemy" + i.ToString();
-
-            enemyMap.Add(enemy.name, enemy);
+            CreateAndSetupEnemy(enemyType, spawnPosition);            
         }
         Invoke("ActivateColliders", 2.0f);
     }

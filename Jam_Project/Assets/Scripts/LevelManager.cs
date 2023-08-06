@@ -21,7 +21,7 @@ public class LevelManager : MonoBehaviour
 
     GameObject[] powerUpsSpawned = new GameObject[3];
 
-    bool inPowerUpRoom = false, powerUpCollected = false;
+    bool inPowerUpRoom = false, powerUpCollected = false, levelStarted = false;
 
     List<GameObject> gravityHolesCurrentLevel = new List<GameObject>();
     [SerializeField] List<int> powerUpRoomIndices = new List<int>();
@@ -34,10 +34,14 @@ public class LevelManager : MonoBehaviour
     
     TextMeshPro infoText;
 
+    Color initBackgroundColor;
+
     bool spawnNewRoom = true;
     int roomIndex = -1;
     [SerializeField] int totalRoomIndex = -1;
     int powerUpRoomListIndex = 0;
+
+    float timeTillLevelStart;
 
     void Start()
     {
@@ -46,6 +50,8 @@ public class LevelManager : MonoBehaviour
 
         roomGenerator = FindAnyObjectByType<RoomGenerator>();
         enemyManager = FindAnyObjectByType<EnemyManager>();
+
+        initBackgroundColor = Camera.main.backgroundColor;
 
         // Pregenerate all the rooms for this dungeon / level / floor
 
@@ -89,9 +95,16 @@ public class LevelManager : MonoBehaviour
             totalRoomIndex++;
             infoText.text = "";
 
+            if (Camera.main.backgroundColor != initBackgroundColor)
+            {
+                Camera.main.backgroundColor = initBackgroundColor;
+            }
+
             // Check if previous room was the power-up room. If so deactivate
             if (inPowerUpRoom) 
             {
+                levelStarted = true;
+
                 // Destroy power-ups
                 Destroy(powerUpsSpawned[0]);
                 Destroy(powerUpsSpawned[1]);
@@ -168,9 +181,10 @@ public class LevelManager : MonoBehaviour
             roomGenerator.Rooms[roomIndex].GetComponent<NavMeshSurface>().BuildNavMesh();
 
             // Spawn all the enemies
-            enemyManager.SpawnEnemies();
+            enemyManager.SpawnEnemies(roomIndex);
 
-            // enemyManager.ApplyCurse();
+            //int curseRand = Random.Range(0, 100);
+            //if (curseRand < 20) { enemyManager.ApplyCurse(); }
 
             // Spawn gravity holes in the required places
             var holePosThislevel = roomGenerator.HolePositions[roomIndex];
@@ -201,6 +215,19 @@ public class LevelManager : MonoBehaviour
             spawnNewRoom = false;
         }
 
+        if (timeTillLevelStart > 0)
+        {
+            Time.timeScale = 0.1f;
+            timeTillLevelStart -= Time.deltaTime;
+            return;
+        }
+        else if(!levelStarted)
+        {
+            Time.timeScale = 1.0f;
+            levelStarted = true;
+            spawnNewRoom = true;
+        }
+
         // for debugging only
         if (Input.GetKeyDown(KeyCode.L) && inPowerUpRoom)
         {
@@ -211,9 +238,10 @@ public class LevelManager : MonoBehaviour
         {
             if (powerUpCollected) { spawnNewRoom = true; }
         }
-        else if (enemyManager.EnemyMap.Count == 0) 
-        { 
-            spawnNewRoom = true; 
+        else if (levelStarted && enemyManager.EnemyMap.Count == 0 && !spawnNewRoom) 
+        {
+            timeTillLevelStart = 0.1f;
+            levelStarted = false;
         }
     }
 }

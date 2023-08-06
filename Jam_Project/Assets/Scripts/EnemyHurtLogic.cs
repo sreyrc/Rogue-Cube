@@ -14,6 +14,8 @@ public class EnemyHurtLogic : MonoBehaviour
     [SerializeField] private float hitCoolDownDuration = 0.03f;
     [SerializeField] private float hitCoolDownTime = 0.0f;
 
+    [SerializeField] float knockBackFactor;
+
     [SerializeField] float attackRadius = 3.0f;
 
     [SerializeField] GameObject hitParticles;
@@ -116,7 +118,7 @@ public class EnemyHurtLogic : MonoBehaviour
             if (pushBackDirection != Vector3.zero)
             {
                 float k = Mathf.Lerp(0, playerWeapon.knockBack, stunTimer/stunDuration);
-                transform.Translate(pushBackDirection * k * Time.deltaTime, Space.World);
+                transform.Translate(pushBackDirection * k * knockBackFactor * Time.deltaTime, Space.World);
             }
         }    
         else if (isStunned)

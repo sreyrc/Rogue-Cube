@@ -98,7 +98,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f0dedeb7898024ea4a732174444ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valueDisplayUI: {fileID: 0}
   pauseBetweenHurt: 0.2
   damage: 2
 --- !u!1 &7326986158201681354
@@ -135,6 +136,7 @@ GameObject:
   - component: {fileID: 8116014632346799720}
   - component: {fileID: -5069377158045425386}
   - component: {fileID: 4233887442327149580}
+  - component: {fileID: 2971533672239752086}
   m_Layer: 8
   m_Name: Laser Beam Enemy
   m_TagString: Enemy
@@ -175,6 +177,7 @@ MonoBehaviour:
   stunDuration: 1
   hitCoolDownDuration: 0.03
   hitCoolDownTime: 0
+  knockBackFactor: 1
   attackRadius: 3
   hitParticles: {fileID: 2475836489115903224, guid: e43a185a1a66c96408806f93875c6ace, type: 3}
   emitParticles: 0
@@ -192,8 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b374e5f63fa339b42817eff2f06674c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
-  maxHp: 10
+  hp: 20
+  maxHp: 20
   moveSpeed: 0
   rotationSpeed: 0
 --- !u!195 &-5069377158045425386
@@ -239,6 +242,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.99160343, y: 1.0148757, z: 1.0060079}
   m_Center: {x: 0.0040502846, y: 0.005836338, z: 0.0012577772}
+--- !u!54 &2971533672239752086
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7326986158201681354}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 1000
+  m_AngularDrag: 1000
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8028316968167152972
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +331,6 @@ GameObject:
   - component: {fileID: 1256434997498278762}
   - component: {fileID: 2037922130685567003}
   - component: {fileID: 5922352194490364569}
-  - component: {fileID: 631143121873648400}
   m_Layer: 8
   m_Name: Beam Enemy Body
   m_TagString: Untagged
@@ -395,30 +424,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!54 &631143121873648400
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8757436337366465211}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 100
-  m_AngularDrag: 100
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0

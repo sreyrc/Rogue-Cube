@@ -126,6 +126,7 @@ MonoBehaviour:
   stunDuration: 1
   hitCoolDownDuration: 0.3
   hitCoolDownTime: 0
+  knockBackFactor: 1
   attackRadius: 3
   hitParticles: {fileID: 2475836489115903224, guid: e43a185a1a66c96408806f93875c6ace, type: 3}
   emitParticles: 0
@@ -277,6 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f0dedeb7898024ea4a732174444ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valueDisplayUI: {fileID: 0}
   pauseBetweenHurt: 0.2
   damage: 5
 --- !u!65 &5488133025389918210
