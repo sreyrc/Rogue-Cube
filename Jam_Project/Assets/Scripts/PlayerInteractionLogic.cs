@@ -8,6 +8,7 @@ public class PlayerInteractionLogic : MonoBehaviour
     CharacterStats playerStats;
     PlayerDash playerDash;
     GameObject pickupWithinRange;
+    LevelManager levelManager;
     public bool isHurt = false;
 
     [SerializeField] TextMeshPro infoDisplay; 
@@ -15,6 +16,7 @@ public class PlayerInteractionLogic : MonoBehaviour
     {
         playerStats = GetComponent<CharacterStats>();
         playerDash = GetComponent<PlayerDash>();
+        levelManager = FindObjectOfType<LevelManager>();
     }
 
     private void OnTriggerStay(Collider other)
@@ -52,6 +54,7 @@ public class PlayerInteractionLogic : MonoBehaviour
         if (pickupWithinRange != null && Input.GetKeyDown(KeyCode.E))
         {
             pickupWithinRange.GetComponent<Pickup>().ApplyEffect(gameObject);
+            if (levelManager != null) { levelManager.powerUpCollected = true; }
             Destroy(pickupWithinRange);
             pickupWithinRange = null;
             infoDisplay.text = "";

@@ -6,6 +6,7 @@ using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -21,7 +22,8 @@ public class LevelManager : MonoBehaviour
 
     GameObject[] powerUpsSpawned = new GameObject[3];
 
-    bool inPowerUpRoom = false, powerUpCollected = false, levelStarted = false;
+    bool inPowerUpRoom = false, levelStarted = true;
+    public bool powerUpCollected = false;
 
     List<GameObject> gravityHolesCurrentLevel = new List<GameObject>();
     [SerializeField] List<int> powerUpRoomIndices = new List<int>();
@@ -31,6 +33,7 @@ public class LevelManager : MonoBehaviour
     EnemyManager enemyManager;
 
     GameObject player;
+    [SerializeField] GameObject deathScreenUI;
     
     TextMeshPro infoText;
 
@@ -57,7 +60,7 @@ public class LevelManager : MonoBehaviour
 
         // Spawn each room when the time comes
 
-        int numRooms = Random.Range(15, 20);
+        int numRooms = Random.Range(20, 25);
         roomDimensionsMinMax = new Vector2(5, 10);
 
         for (int i = 0; i < numRooms; i++)
@@ -94,6 +97,11 @@ public class LevelManager : MonoBehaviour
         {
             totalRoomIndex++;
             infoText.text = "";
+
+            if (roomIndex + 1 == roomGenerator.Rooms.Count)
+            {
+                SceneManager.LoadScene("Win Screen");
+            }
 
             if (Camera.main.backgroundColor != initBackgroundColor)
             {
@@ -242,6 +250,18 @@ public class LevelManager : MonoBehaviour
         {
             timeTillLevelStart = 0.1f;
             levelStarted = false;
+        }
+
+        if (player.GetComponent<CharacterStats>().Hp <=0)
+        {
+            Destroy(FindObjectOfType<PauseScreenManager>());
+            deathScreenUI.SetActive(true);
+
+            // Disable player capabilities
+            player.GetComponent<PlayerAttack>().enabled = false;
+            player.GetComponent<PlayerDash>().enabled = false;
+            player.GetComponent<PlayerInteractionLogic>().enabled = false;
+            player.GetComponent<PlayerMovement>().enabled = false;
         }
     }
 }

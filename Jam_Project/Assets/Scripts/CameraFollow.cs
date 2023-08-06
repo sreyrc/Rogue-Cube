@@ -15,6 +15,11 @@ public class CameraFollow : MonoBehaviour
         transform.position = smoothedPosition;
 
         transform.LookAt(target);
+
+        if(target.position.y < -10.0f)
+        {
+            enabled = false;
+        }
     }
 
 }
